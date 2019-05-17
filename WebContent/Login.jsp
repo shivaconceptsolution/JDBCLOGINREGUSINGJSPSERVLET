@@ -14,12 +14,13 @@ Enter username
 <br>
 Enter password
 <br>
-<input type="text" name="txtpass" />
+<input type="password" name="txtpass" />
 <br>
 
 <input type="submit" name="btnsubmit" value="click" />
 
 
 </form>
+<a href="Reg.jsp">NEW USER SIGNUP HERE</a>
 </body>
 </html>

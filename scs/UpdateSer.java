@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -12,19 +11,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class LoginSer
+ * Servlet implementation class UpdateSer
  */
-@WebServlet("/LoginSer")
-public class LoginSer extends HttpServlet {
+@WebServlet("/UpdateSer")
+public class UpdateSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginSer() {
+    public UpdateSer() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,27 +40,26 @@ public class LoginSer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		String uname = request.getParameter("txtuser");
-		String pass = request.getParameter("txtpass");
 		try
 		{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java7", "root", "");
-		Statement st = con.createStatement();
-		ResultSet res = st.executeQuery("select * from Register where username='"+uname+"' and pass='"+pass+"'");
-		if(res.next())
-		{
-		    HttpSession session= request.getSession();
-		    session.setAttribute("uid",uname);
-			response.sendRedirect("ViewReg.jsp");
-		}
-		else
-			out.print("invalid userid and password");
+			String uname = request.getParameter("txtuser");
+			String pass = request.getParameter("txtpass");
+			String email = request.getParameter("txtemail");
+			String mobile = request.getParameter("txtmobile");
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/java7", "root", "");
+			Statement st = con.createStatement();
+			int x = st.executeUpdate("update register set pass='"+pass+"',email='"+email+"',mobile='"+mobile+"' where username='"+uname+"'");
+			if(x!=0)
+				response.sendRedirect("ViewReg.jsp");
+			else
+				out.print("Problem in Data updation");
 		}
 		catch(Exception ex)
 		{
-			out.print(ex.getMessage());
+			out.println(ex.getMessage());
+			
 		}
-		}
+	}
 
 }
